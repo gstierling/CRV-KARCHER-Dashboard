@@ -78,6 +78,20 @@
   .legend .num{font-weight:900}
   .legend .pct{color:var(--gray);font-weight:800;min-width:52px;text-align:right}
 
+  /* Siluetas tamaño */
+  .dogs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:end;margin-top:6px}
+  .dog{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:var(--bg);border-radius:14px;padding:14px 4px 12px;min-height:230px;border-bottom:6px solid var(--yellow)}
+  .dog svg{display:block;fill:var(--black);height:auto}
+  .dog[data-size="pequena"] svg{width:42%}
+  .dog[data-size="mediana"] svg{width:68%}
+  .dog[data-size="grande"] svg{width:96%}
+  .d-num{font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:10px}
+  .d-lbl{font-weight:800;font-size:.95rem;margin-top:10px;color:var(--gray)}
+  .d-pct{font-size:1.35rem;font-weight:900;margin-top:4px;background:var(--black);color:var(--yellow);padding:3px 10px;border-radius:999px}
+  .dog.top{background:var(--yellow);border-bottom-color:var(--black)}
+  .dog.top .d-lbl{color:var(--black)}
+  .d-note{color:var(--gray);font-weight:700;font-size:.85rem;margin-top:10px;text-align:center}
+
   /* Progress bar (opt-in) */
   .bar-wrap{background:var(--gray-3);border-radius:999px;height:22px;overflow:hidden;margin:10px 0 8px}
   .bar-fill{height:100%;background:var(--yellow);border-right:3px solid var(--black);transition:width .6s ease;width:0}
@@ -200,10 +214,35 @@
 
     <div class="card">
       <h2>Tamaño del perro</h2>
-      <div class="hint">Distribución sobre el total de perros</div>
-      <div class="chart-box donut"><canvas id="cSize"></canvas></div>
-      <ul class="legend" id="lSize"></ul>
+      <div class="hint">Perros inscritos y % sobre el total</div>
+      <div class="dogs">
+        <div class="dog" data-size="pequena">
+          <div class="d-num" id="dNumP">0</div>
+          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+          <div class="d-lbl">Pequeña</div>
+          <div class="d-pct" id="dPctP">0%</div>
+        </div>
+        <div class="dog" data-size="mediana">
+          <div class="d-num" id="dNumM">0</div>
+          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+          <div class="d-lbl">Mediana</div>
+          <div class="d-pct" id="dPctM">0%</div>
+        </div>
+        <div class="dog" data-size="grande">
+          <div class="d-num" id="dNumG">0</div>
+          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+          <div class="d-lbl">Grande</div>
+          <div class="d-pct" id="dPctG">0%</div>
+        </div>
+      </div>
+      <div class="d-note" id="dNote"></div>
     </div>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <path id="dogShape" d="M21 30 C16 26 12 20 11 13 C10.5 10 13 9.5 14 12 C16 18 19 23 25 26 L64 26 C66 20 69 14 73 10 L75 3 L79 8 C82 8 85 9 87 12 L95 15 C98 16 98 20 95 21 L86 23 C84 24 82 26 80 29 L77 40 C76 44 74 46 73 48 L74 70 L67 70 L65 50 C63 50 61 50 59 50 L59 70 L53 70 L52 49 C45 49 39 49 34 48 L32 70 L26 70 L26 50 L24 70 L18 70 L19 46 C19 40 19 35 21 30 Z"/>
+      </defs>
+    </svg>
 
     <div class="card">
       <h2>Autorización de datos</h2>
@@ -527,12 +566,23 @@ function render(){
   rows.forEach(r => sizeCount[r.tam] = (sizeCount[r.tam]||0)+1);
   const sizes = Object.keys(sizeCount).sort((a,b)=> sizeRank(a)-sizeRank(b) || sizeCount[b]-sizeCount[a]);
   const sizeColors = sizes.map((_,i)=>PALETTE[i%PALETTE.length]);
-  upsert('cSize', {
-    type:'doughnut',
-    data:{ labels:sizes, datasets:[{ data:sizes.map(s=>sizeCount[s]), backgroundColor:sizeColors, borderColor:'#fff', borderWidth:3 }]},
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{legend:{display:false}} }
+  // Siluetas: agrupa variantes (pequeño/chica, mediano, etc.)
+  const grp = { P:0, M:0, G:0 }; let other = 0;
+  rows.forEach(r => {
+    const t = norm(r.tam);
+    if (/^(peque|chic)/.test(t)) grp.P++;
+    else if (/^median/.test(t)) grp.M++;
+    else if (/^grand/.test(t)) grp.G++;
+    else other++;
   });
-  legendHTML($('lSize'), sizes, sizes.map(s=>sizeCount[s]), sizeColors);
+  const tot = rows.length || 1;
+  const maxG = Math.max(grp.P, grp.M, grp.G);
+  [['P','pequena'],['M','mediana'],['G','grande']].forEach(([k,s]) => {
+    $('dNum'+k).textContent = fmtN(grp[k]);
+    $('dPct'+k).textContent = (rows.length ? Math.round(grp[k]*100/tot) : 0) + '%';
+    document.querySelector(`.dog[data-size="${s}"]`).classList.toggle('top', maxG > 0 && grp[k] === maxG);
+  });
+  $('dNote').textContent = other ? `${fmtN(other)} registro(s) sin tamaño reconocido (${Math.round(other*100/tot)}%)` : '';
 
   // Opt-in
   $('oPct').textContent = pct + '%';
