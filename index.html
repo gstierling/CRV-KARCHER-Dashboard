@@ -323,6 +323,9 @@ function sizeGroup(t){
   return null;
 }
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const SIZE_NAME = { P:'Pequeño', M:'Mediano', G:'Grande' };
+const chipName = t => SIZE_NAME[sizeGroup(t)] || t;
+const tagName  = t => SIZE_NAME[sizeGroup(t)] ? 'Perro ' + SIZE_NAME[sizeGroup(t)] : t;
 
 /* ================== LOAD (JSONP gviz) ================== */
 let DATA = [];
@@ -482,7 +485,7 @@ function render(){
   const sizes = Object.keys(sizeCount).sort((a,b) => (order[sizeGroup(a)] ?? 9) - (order[sizeGroup(b)] ?? 9));
   const chipOpts = ['Todos', ...sizes];
   if (!chipOpts.includes(filterSize)) filterSize = 'Todos';
-  $('chips').innerHTML = chipOpts.map(o => `<button class="chip ${o===filterSize?'on':''}" data-v="${esc(o)}">${esc(o)} · ${fmtN(o==='Todos' ? rows.length : sizeCount[o])}</button>`).join('');
+  $('chips').innerHTML = chipOpts.map(o => `<button class="chip ${o===filterSize?'on':''}" data-v="${esc(o)}">${esc(o==='Todos' ? o : chipName(o))} · ${fmtN(o==='Todos' ? rows.length : sizeCount[o])}</button>`).join('');
 
   renderList();
 }
@@ -504,7 +507,7 @@ function renderList(){
     const e = r.edad != null ? `${r.edad} años · ` : '';
     return `<div class="row">
       <div class="r-name">${esc(r.nombre)} ${esc(r.apellido)}</div>
-      <div class="r-tags"><span class="tag">${esc(r.tam)}</span><span class="tag ${r.acepta?'y':'n'}">${r.acepta?'Acepta datos':'No acepta'}</span></div>
+      <div class="r-tags"><span class="tag">${esc(tagName(r.tam))}</span><span class="tag ${r.acepta?'y':'n'}">${r.acepta?'Acepta datos':'No acepta'}</span></div>
       <div class="r-meta">${e}${f}</div>
     </div>`;
   }).join('');
