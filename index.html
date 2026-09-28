@@ -11,7 +11,6 @@
 <style>
   :root{
     --yellow:#FFED00;
-    --yellow-dark:#E6D400;
     --black:#1D1D1B;
     --anthracite:#2B2B2A;
     --gray:#6F6F6E;
@@ -19,7 +18,6 @@
     --gray-3:#E3E3E3;
     --bg:#F4F4F2;
     --white:#FFFFFF;
-    --ok:#1D1D1B;
     --radius:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -38,28 +36,27 @@
   h1 em{font-style:normal;color:var(--yellow)}
   .sub{color:var(--gray-2);font-weight:600;margin-top:6px;font-size:1rem}
   .status{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.92rem;color:var(--gray-2);font-weight:700}
-  .dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 0 rgba(255,237,0,.7);animation:pulse 2s infinite}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);animation:pulse 2s infinite}
   .dot.err{background:#ff5a4f;animation:none}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,237,0,.6)}70%{box-shadow:0 0 0 10px rgba(255,237,0,0)}100%{box-shadow:0 0 0 0 rgba(255,237,0,0)}}
 
   main{padding:16px;max-width:1280px;margin:0 auto}
   .alert{display:none;background:#fff3f2;border:2px solid #ff5a4f;color:#8a1c16;border-radius:var(--radius);padding:14px 16px;font-weight:700;margin-bottom:16px;line-height:1.4}
 
-  /* Countdown */
-  .countdown{background:var(--yellow);border-radius:var(--radius);padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-  .countdown .big{font-size:3rem;font-weight:900;line-height:1}
-  .countdown .lbl{font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:.04em}
-  .countdown .when{font-weight:700;font-size:.95rem;text-align:right}
+  /* Contenedores amarillos (cuenta regresiva y perros inscritos) */
+  .hero{background:var(--yellow);border-radius:var(--radius);padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .hero .big{font-size:3rem;font-weight:900;line-height:1}
+  .hero .lbl{font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:.04em}
+  .hero .when{font-weight:700;font-size:.95rem;text-align:right}
+  .hero .right{text-align:right;flex-shrink:0}
+  .hero-dogs{flex:1;min-width:0;max-width:260px}
+  .hero-dogs svg{display:block;width:100%;height:auto;fill:var(--black)}
 
-  /* KPIs */
-  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-  .kpi{background:var(--white);border-radius:var(--radius);padding:16px;border-left:6px solid var(--yellow);min-height:118px;display:flex;flex-direction:column;justify-content:space-between}
-  .kpi.dark{background:var(--black);color:var(--white);border-left-color:var(--yellow)}
-  .kpi.dark .k-lbl,.kpi.dark .k-foot{color:var(--gray-2)}
-  .kpi.dark .k-val{color:var(--yellow)}
-  .k-lbl{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gray)}
-  .k-val{font-size:2.3rem;font-weight:900;line-height:1.05;margin:6px 0 2px}
-  .k-foot{font-size:.85rem;font-weight:700;color:var(--gray)}
+  /* KPI edad */
+  .kpi{background:var(--black);color:var(--white);border-radius:var(--radius);padding:18px;border-left:6px solid var(--yellow);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .k-lbl{font-size:.9rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-2)}
+  .k-foot{font-size:.88rem;font-weight:700;color:var(--gray-2);margin-top:4px}
+  .k-val{font-size:3rem;font-weight:900;line-height:1;color:var(--yellow);flex-shrink:0}
 
   /* Cards */
   .grid{display:grid;grid-template-columns:1fr;gap:16px}
@@ -67,19 +64,10 @@
   .card h2{font-size:1.1rem;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px}
   .card h2::before{content:"";width:6px;height:20px;background:var(--yellow);border-radius:2px;flex-shrink:0}
   .card .hint{color:var(--gray);font-size:.88rem;font-weight:600;margin-bottom:14px}
-  .chart-box{position:relative;height:280px;width:100%}
-  .chart-box.tall{height:320px}
-  .chart-box.donut{height:230px}
-
-  .legend{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:8px}
-  .legend li{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;padding:8px 10px;border-radius:10px;background:var(--bg)}
-  .legend .sw{width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1px solid rgba(0,0,0,.15)}
-  .legend .name{flex:1}
-  .legend .num{font-weight:900}
-  .legend .pct{color:var(--gray);font-weight:800;min-width:52px;text-align:right}
+  .chart-box{position:relative;height:320px;width:100%}
 
   /* Siluetas tamaño */
-  .dogs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:end;margin-top:6px}
+  .dogs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:end;margin:6px auto 0;max-width:760px}
   .dog{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:var(--bg);border-radius:14px;padding:14px 4px 12px;min-height:230px;border-bottom:6px solid var(--yellow)}
   .dog svg{display:block;fill:var(--black);height:auto}
   .dog[data-size="pequena"] svg{width:42%}
@@ -92,27 +80,26 @@
   .dog.top .d-lbl{color:var(--black)}
   .d-note{color:var(--gray);font-weight:700;font-size:.85rem;margin-top:10px;text-align:center}
 
-  /* Progress bar (opt-in) */
-  .bar-wrap{background:var(--gray-3);border-radius:999px;height:22px;overflow:hidden;margin:10px 0 8px}
+  /* Autorización de datos */
+  .optin{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{border-radius:14px;padding:16px 12px;text-align:center}
+  .opt.yes{background:var(--yellow)}
+  .opt.no{background:var(--bg)}
+  .opt .o-l{font-weight:900;font-size:1.1rem;text-transform:uppercase}
+  .opt .o-n{font-size:2.8rem;font-weight:900;line-height:1.05;margin:6px 0}
+  .opt .o-p{display:inline-block;font-weight:900;font-size:1.1rem;background:var(--black);color:var(--yellow);padding:3px 12px;border-radius:999px}
+  .bar-wrap{display:flex;background:var(--gray-3);border-radius:999px;height:22px;overflow:hidden;margin-top:14px}
   .bar-fill{height:100%;background:var(--yellow);border-right:3px solid var(--black);transition:width .6s ease;width:0}
-  .optin-row{display:flex;justify-content:space-between;font-weight:800}
-  .optin-big{font-size:2.6rem;font-weight:900;line-height:1}
+  .o-foot{color:var(--gray);font-weight:700;font-size:.88rem;margin-top:10px;text-align:center}
 
-  /* Stats list */
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .stat{background:var(--bg);border-radius:12px;padding:12px}
-  .stat .s-l{font-size:.78rem;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:.04em}
-  .stat .s-v{font-size:1.5rem;font-weight:900;margin-top:2px}
-
-  /* Table */
+  /* Lista */
   .tools{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
   .search{width:100%;font-family:inherit;font-size:1rem;font-weight:700;padding:14px 16px;border-radius:12px;border:2px solid var(--gray-3);background:var(--bg);color:var(--black);outline:none}
   .search:focus{border-color:var(--black);background:var(--white)}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .chip{font-family:inherit;font-size:.95rem;font-weight:800;padding:10px 14px;border-radius:999px;border:2px solid var(--black);background:var(--white);color:var(--black);cursor:pointer}
   .chip.on{background:var(--black);color:var(--yellow)}
-  .btns{display:grid;grid-template-columns:1fr;gap:8px}
-  .btn{font-family:inherit;font-size:1rem;font-weight:900;padding:14px;border-radius:12px;border:none;background:var(--yellow);color:var(--black);cursor:pointer}
+  .btn{display:block;text-align:center;text-decoration:none;font-family:inherit;font-size:1.05rem;font-weight:900;padding:16px;border-radius:12px;border:none;background:var(--yellow);color:var(--black);cursor:pointer}
   .btn.dark{background:var(--black);color:var(--yellow)}
   .rows{display:flex;flex-direction:column;gap:10px}
   .row{background:var(--bg);border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
@@ -129,25 +116,27 @@
 
   @media (min-width:700px){
     h1{font-size:2.2rem}
-    .kpis{grid-template-columns:repeat(3,1fr)}
+    .hero .big,.k-val{font-size:3.6rem}
     .grid{grid-template-columns:1fr 1fr}
     .span2{grid-column:1/-1}
     .tools{flex-direction:row;align-items:center;flex-wrap:wrap}
     .search{flex:1;min-width:240px}
-    .btns{grid-template-columns:1fr 1fr}
     .rows{display:grid;grid-template-columns:1fr 1fr}
-    .stats{grid-template-columns:repeat(4,1fr)}
+    .hero-dogs{max-width:340px}
   }
   @media (min-width:1100px){
-    .kpis{grid-template-columns:repeat(6,1fr)}
-    .grid{grid-template-columns:repeat(3,1fr)}
-    .span2{grid-column:span 2}
-    .span3{grid-column:1/-1}
     .rows{grid-template-columns:repeat(3,1fr)}
   }
 </style>
 </head>
 <body>
+
+<!-- Silueta de perro (misma del formulario) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="dogShape" d="M21 30 C16 26 12 20 11 13 C10.5 10 13 9.5 14 12 C16 18 19 23 25 26 L64 26 C66 20 69 14 73 10 L75 3 L79 8 C82 8 85 9 87 12 L95 15 C98 16 98 20 95 21 L86 23 C84 24 82 26 80 29 L77 40 C76 44 74 46 73 48 L74 70 L67 70 L65 50 C63 50 61 50 59 50 L59 70 L53 70 L52 49 C45 49 39 49 34 48 L32 70 L26 70 L26 50 L24 70 L18 70 L19 46 C19 40 19 35 21 30 Z"/>
+  </defs>
+</svg>
 
 <header>
   <div class="brand">
@@ -163,7 +152,7 @@
 <main>
   <div class="alert" id="alert"></div>
 
-  <section class="countdown">
+  <section class="hero">
     <div>
       <div class="big" id="cdDays">–</div>
       <div class="lbl" id="cdLbl">días para el evento</div>
@@ -171,37 +160,52 @@
     <div class="when">Domingo<br>11 de octubre 2026</div>
   </section>
 
-  <section class="kpis">
-    <div class="kpi dark">
-      <div class="k-lbl">Perros inscritos</div>
-      <div class="k-val" id="kTotal">0</div>
-      <div class="k-foot">Total de registros</div>
+  <section class="hero">
+    <div class="hero-dogs">
+      <svg viewBox="0 0 222 72" aria-hidden="true">
+        <use href="#dogShape"/>
+        <use href="#dogShape" transform="translate(104 23) scale(.68)"/>
+        <use href="#dogShape" transform="translate(176 41.8) scale(.42)"/>
+      </svg>
     </div>
-    <div class="kpi">
-      <div class="k-lbl">Personas únicas</div>
-      <div class="k-val" id="kPersons">0</div>
-      <div class="k-foot" id="kPersonsFoot">por correo / celular</div>
+    <div class="right">
+      <div class="big" id="kTotal">0</div>
+      <div class="lbl">Perros inscritos</div>
     </div>
-    <div class="kpi">
-      <div class="k-lbl">Aceptan datos Kärcher</div>
-      <div class="k-val" id="kOptin">0%</div>
-      <div class="k-foot" id="kOptinFoot">de las personas</div>
+  </section>
+
+  <section class="card" style="margin-bottom:16px">
+    <h2>Tamaño del perro</h2>
+    <div class="hint">Perros inscritos y % sobre el total</div>
+    <div class="dogs">
+      <div class="dog" data-size="pequena">
+        <div class="d-num" id="dNumP">0</div>
+        <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+        <div class="d-lbl">Pequeña</div>
+        <div class="d-pct" id="dPctP">0%</div>
+      </div>
+      <div class="dog" data-size="mediana">
+        <div class="d-num" id="dNumM">0</div>
+        <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+        <div class="d-lbl">Mediana</div>
+        <div class="d-pct" id="dPctM">0%</div>
+      </div>
+      <div class="dog" data-size="grande">
+        <div class="d-num" id="dNumG">0</div>
+        <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
+        <div class="d-lbl">Grande</div>
+        <div class="d-pct" id="dPctG">0%</div>
+      </div>
     </div>
-    <div class="kpi">
-      <div class="k-lbl">Edad promedio</div>
-      <div class="k-val" id="kAge">–</div>
-      <div class="k-foot" id="kAgeFoot">años al día del evento</div>
+    <div class="d-note" id="dNote"></div>
+  </section>
+
+  <section class="kpi">
+    <div>
+      <div class="k-lbl">Edad promedio dueño(a)s</div>
+      <div class="k-foot">años al día del evento</div>
     </div>
-    <div class="kpi">
-      <div class="k-lbl">Últimas 24 h</div>
-      <div class="k-val" id="k24">0</div>
-      <div class="k-foot" id="kToday">hoy: 0</div>
-    </div>
-    <div class="kpi">
-      <div class="k-lbl">Promedio diario</div>
-      <div class="k-val" id="kAvg">0</div>
-      <div class="k-foot" id="kDays">registros por día</div>
-    </div>
+    <div class="k-val" id="kAge">–</div>
   </section>
 
   <section class="grid">
@@ -209,90 +213,29 @@
     <div class="card span2">
       <h2>Evolución de inscripciones</h2>
       <div class="hint">Registros por día (barras) y acumulado (línea)</div>
-      <div class="chart-box tall"><canvas id="cTimeline"></canvas></div>
-    </div>
-
-    <div class="card">
-      <h2>Tamaño del perro</h2>
-      <div class="hint">Perros inscritos y % sobre el total</div>
-      <div class="dogs">
-        <div class="dog" data-size="pequena">
-          <div class="d-num" id="dNumP">0</div>
-          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
-          <div class="d-lbl">Pequeña</div>
-          <div class="d-pct" id="dPctP">0%</div>
-        </div>
-        <div class="dog" data-size="mediana">
-          <div class="d-num" id="dNumM">0</div>
-          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
-          <div class="d-lbl">Mediana</div>
-          <div class="d-pct" id="dPctM">0%</div>
-        </div>
-        <div class="dog" data-size="grande">
-          <div class="d-num" id="dNumG">0</div>
-          <svg viewBox="0 0 100 72"><use href="#dogShape"/></svg>
-          <div class="d-lbl">Grande</div>
-          <div class="d-pct" id="dPctG">0%</div>
-        </div>
-      </div>
-      <div class="d-note" id="dNote"></div>
-    </div>
-
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <defs>
-        <path id="dogShape" d="M21 30 C16 26 12 20 11 13 C10.5 10 13 9.5 14 12 C16 18 19 23 25 26 L64 26 C66 20 69 14 73 10 L75 3 L79 8 C82 8 85 9 87 12 L95 15 C98 16 98 20 95 21 L86 23 C84 24 82 26 80 29 L77 40 C76 44 74 46 73 48 L74 70 L67 70 L65 50 C63 50 61 50 59 50 L59 70 L53 70 L52 49 C45 49 39 49 34 48 L32 70 L26 70 L26 50 L24 70 L18 70 L19 46 C19 40 19 35 21 30 Z"/>
-      </defs>
-    </svg>
-
-    <div class="card">
-      <h2>Autorización de datos</h2>
-      <div class="hint">Personas que aceptan compartir sus datos con Kärcher</div>
-      <div class="optin-row"><span class="optin-big" id="oPct">0%</span><span id="oCount" style="align-self:flex-end">0 de 0</span></div>
-      <div class="bar-wrap"><div class="bar-fill" id="oBar"></div></div>
-      <div class="stats" style="margin-top:14px">
-        <div class="stat"><div class="s-l">Leads Kärcher</div><div class="s-v" id="oYes">0</div></div>
-        <div class="stat"><div class="s-l">No aceptan</div><div class="s-v" id="oNo">0</div></div>
-      </div>
+      <div class="chart-box"><canvas id="cTimeline"></canvas></div>
     </div>
 
     <div class="card span2">
-      <h2>Rango etario</h2>
-      <div class="hint">Edad de las personas inscritas al 11/10/2026, desglosada por tamaño del perro</div>
-      <div class="chart-box"><canvas id="cAge"></canvas></div>
-      <div class="stats" style="margin-top:14px">
-        <div class="stat"><div class="s-l">Mínima</div><div class="s-v" id="aMin">–</div></div>
-        <div class="stat"><div class="s-l">Máxima</div><div class="s-v" id="aMax">–</div></div>
-        <div class="stat"><div class="s-l">Mediana</div><div class="s-v" id="aMed">–</div></div>
-        <div class="stat"><div class="s-l">Promedio</div><div class="s-v" id="aAvg">–</div></div>
+      <h2>¿Acepta compartir datos con Kärcher?</h2>
+      <div class="hint">Respuestas sobre el total de registros</div>
+      <div class="optin">
+        <div class="opt yes">
+          <div class="o-l">Sí</div>
+          <div class="o-n" id="oYes">0</div>
+          <div class="o-p" id="oYesP">0%</div>
+        </div>
+        <div class="opt no">
+          <div class="o-l">No</div>
+          <div class="o-n" id="oNo">0</div>
+          <div class="o-p" id="oNoP">0%</div>
+        </div>
       </div>
+      <div class="bar-wrap"><div class="bar-fill" id="oBar"></div></div>
+      <div class="o-foot" id="oFoot">0 registros</div>
     </div>
 
-    <div class="card">
-      <h2>Perros por persona</h2>
-      <div class="hint">Personas que inscribieron más de un perro</div>
-      <div class="chart-box donut"><canvas id="cMulti"></canvas></div>
-      <ul class="legend" id="lMulti"></ul>
-    </div>
-
-    <div class="card">
-      <h2>Hora de inscripción</h2>
-      <div class="hint">¿A qué hora se inscribe la gente?</div>
-      <div class="chart-box"><canvas id="cHour"></canvas></div>
-    </div>
-
-    <div class="card">
-      <h2>Día de la semana</h2>
-      <div class="hint">Registros según día</div>
-      <div class="chart-box"><canvas id="cWeek"></canvas></div>
-    </div>
-
-    <div class="card">
-      <h2>Dominio de correo</h2>
-      <div class="hint">Proveedores de email de las personas</div>
-      <div class="chart-box"><canvas id="cDomain"></canvas></div>
-    </div>
-
-    <div class="card span3">
+    <div class="card span2">
       <h2>Inscritos</h2>
       <div class="hint" id="listHint">Más recientes primero</div>
       <div class="tools">
@@ -301,10 +244,7 @@
       </div>
       <div class="rows" id="rows"></div>
       <button class="btn dark more" id="moreBtn" style="display:none">Ver más</button>
-      <div class="btns" style="margin-top:14px">
-        <button class="btn" id="csvLeads">⬇ CSV leads Kärcher (aceptan)</button>
-        <button class="btn dark" id="csvAll">⬇ CSV todos los registros</button>
-      </div>
+      <a class="btn" id="dbBtn" target="_blank" rel="noopener" style="margin-top:14px">Base de datos</a>
     </div>
 
   </section>
@@ -315,15 +255,13 @@
 <script>
 /* ================== CONFIG ================== */
 const SHEET_ID = '1b7TI4ieHVkLFfsGCyRf9_7XQS-eleAehUha79phJa7Y';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 const REFRESH_MS = 30000;
 const EVENT_DATE = new Date(2026, 9, 11); // 11 oct 2026
 const PAGE = 24;
+const C = { yellow:'#FFED00', black:'#1D1D1B' };
 
-const C = {
-  yellow:'#FFED00', black:'#1D1D1B', anth:'#4A4A48', gray:'#8A8A88', gray2:'#B2B2B2', gray3:'#D9D9D6'
-};
-const PALETTE = [C.yellow, C.black, C.gray, C.gray2, '#F5C400', C.anth, C.gray3];
-const SIZE_ORDER = ['pequena','pequeno','chica','chico','mediana','mediano','grande'];
+document.getElementById('dbBtn').href = SHEET_URL;
 
 Chart.defaults.font.family = "'Nunito', sans-serif";
 Chart.defaults.font.weight = 700;
@@ -334,10 +272,11 @@ Chart.defaults.color = '#4A4A48';
 const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2,'0');
-const fmtN = n => n.toLocaleString('es-CL');
+const fmtN = n => Number(n).toLocaleString('es-CL');
 const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const dayLbl = d => `${pad(d.getDate())}/${pad(d.getMonth()+1)}`;
 const cap = s => { s = String(s||'').trim(); return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; };
+const pctOf = (a, b) => b ? Math.round(a*100/b) : 0;
 
 function parseDate(cell){
   if (!cell) return null;
@@ -355,20 +294,14 @@ function parseDate(cell){
     if (m) return new Date(+m[1], +m[2]-1, +m[3]);
     return null;
   }
-  if (typeof v === 'number'){ // serial de Sheets
+  if (typeof v === 'number'){
     const d = new Date(Math.round((v - 25569) * 86400000));
     return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes());
   }
   return null;
 }
 const txt = cell => cell ? String(cell.f ?? cell.v ?? '').trim() : '';
-
-function normPhone(p){
-  let d = String(p||'').replace(/\D/g,'');
-  if (d.length === 9 && d.startsWith('9')) d = '56' + d;
-  if (d.length === 8) d = '569' + d;
-  return d;
-}
+const normPhone = p => { let d = String(p||'').replace(/\D/g,''); if (d.length===9 && d.startsWith('9')) d='56'+d; return d; };
 function ageAt(birth, ref){
   let a = ref.getFullYear() - birth.getFullYear();
   const m = ref.getMonth() - birth.getMonth();
@@ -378,14 +311,18 @@ function ageAt(birth, ref){
 function timeAgo(d){
   const s = Math.floor((Date.now() - d.getTime())/1000);
   if (s < 60) return 'hace instantes';
-  if (s < 3600) return `hace ${Math.floor(s/60)} min`;
-  if (s < 86400) return `hace ${Math.floor(s/3600)} h`;
-  return `hace ${Math.floor(s/86400)} d`;
+  if (s < 3600) return `hace ${fmtN(Math.floor(s/60))} min`;
+  if (s < 86400) return `hace ${fmtN(Math.floor(s/3600))} h`;
+  return `hace ${fmtN(Math.floor(s/86400))} d`;
 }
-function sizeRank(label){
-  const i = SIZE_ORDER.indexOf(norm(label));
-  return i === -1 ? 99 : i;
+function sizeGroup(t){
+  t = norm(t);
+  if (/^(peque|chic)/.test(t)) return 'P';
+  if (/^median/.test(t)) return 'M';
+  if (/^grand/.test(t)) return 'G';
+  return null;
 }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ================== LOAD (JSONP gviz) ================== */
 let DATA = [];
@@ -445,94 +382,47 @@ function parseTable(t){
     const fecha = parseDate(c[idx.fecha]);
     if (!nombre && !fecha) return;
     const mail = txt(c[idx.mail]).toLowerCase();
-    const cel = normPhone(txt(c[idx.cel]));
     const nac = parseDate(c[idx.nac]);
     const age = nac ? ageAt(nac, EVENT_DATE) : null;
     const acc = norm(txt(c[idx.acepta]));
     out.push({
       fecha, nombre: cap(nombre), apellido: txt(c[idx.apell]),
-      celular: txt(c[idx.cel]), celNorm: cel, correo: mail,
-      nac, nacTxt: txt(c[idx.nac]),
       edad: (age != null && age > 0 && age < 110) ? age : null,
-      acepta: acc.startsWith('s') || acc === 'true' || acc === 'x',
+      acepta: acc === 'si' || acc.startsWith('si') || acc === 'true',
+      rechaza: acc === 'no' || acc === 'false',
       tam: cap(txt(c[idx.tam])) || 'Sin dato',
-      key: mail || cel || norm(nombre + ' ' + txt(c[idx.apell]))
+      key: mail || normPhone(txt(c[idx.cel])) || norm(nombre + ' ' + txt(c[idx.apell]))
     });
   });
   return out;
 }
 
-/* ================== CHARTS ================== */
-const charts = {};
-function upsert(id, cfg){
-  if (charts[id]){
-    charts[id].data = cfg.data;
-    charts[id].update('none');
-  } else {
-    charts[id] = new Chart($(id), cfg);
-  }
-}
-const baseScales = (stacked=false) => ({
-  x:{ stacked, grid:{display:false}, ticks:{font:{weight:800}} },
-  y:{ stacked, beginAtZero:true, ticks:{precision:0}, grid:{color:'#EEEEEC'} }
-});
-function legendHTML(el, labels, values, colors){
-  const total = values.reduce((a,b)=>a+b,0) || 1;
-  el.innerHTML = labels.map((l,i) => `
-    <li><span class="sw" style="background:${colors[i]}"></span><span class="name">${l}</span>
-    <span class="num">${fmtN(values[i])}</span><span class="pct">${Math.round(values[i]*100/total)}%</span></li>`).join('');
-}
+/* ================== CHART ================== */
+let timelineChart = null;
 
 /* ================== RENDER ================== */
 function render(){
   const rows = DATA;
   const now = new Date();
 
-  // Countdown
+  // Cuenta regresiva
   const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const dd = Math.round((EVENT_DATE - today0)/86400000);
-  $('cdDays').textContent = dd > 0 ? dd : (dd === 0 ? '¡HOY!' : '✓');
+  $('cdDays').textContent = dd > 0 ? fmtN(dd) : (dd === 0 ? '¡HOY!' : '✓');
   $('cdLbl').textContent = dd > 1 ? 'días para el evento' : dd === 1 ? 'día para el evento' : dd === 0 ? 'es el evento' : 'evento realizado';
 
-  // Personas únicas
-  const persons = new Map();
-  rows.forEach(r => {
-    if (!persons.has(r.key)) persons.set(r.key, { rows:[], acepta:false, edad:null, nombre:r.nombre });
-    const p = persons.get(r.key);
-    p.rows.push(r);
-    if (r.acepta) p.acepta = true;
-    if (r.edad != null) p.edad = r.edad;
-  });
-  const P = [...persons.values()];
-
-  // KPIs
+  // Perros inscritos
   $('kTotal').textContent = fmtN(rows.length);
-  $('kPersons').textContent = fmtN(P.length);
-  const multi = P.filter(p => p.rows.length > 1).length;
-  $('kPersonsFoot').textContent = multi ? `${multi} con más de un perro` : 'por correo / celular';
 
-  const yes = P.filter(p => p.acepta).length;
-  const pct = P.length ? Math.round(yes*100/P.length) : 0;
-  $('kOptin').textContent = pct + '%';
-  $('kOptinFoot').textContent = `${fmtN(yes)} de ${fmtN(P.length)} personas`;
+  // Edad promedio dueño(a)s (una vez por persona)
+  const ageByPerson = new Map();
+  rows.forEach(r => { if (r.edad != null) ageByPerson.set(r.key, r.edad); });
+  const ages = [...ageByPerson.values()];
+  $('kAge').textContent = ages.length ? fmtN(Math.round(ages.reduce((a,b)=>a+b,0)/ages.length)) : '–';
 
-  const ages = P.map(p => p.edad).filter(a => a != null).sort((a,b)=>a-b);
-  const avg = ages.length ? ages.reduce((a,b)=>a+b,0)/ages.length : null;
-  const med = ages.length ? (ages.length%2 ? ages[(ages.length-1)/2] : (ages[ages.length/2-1]+ages[ages.length/2])/2) : null;
-  $('kAge').textContent = avg != null ? Math.round(avg) : '–';
-  $('aMin').textContent = ages.length ? ages[0] : '–';
-  $('aMax').textContent = ages.length ? ages[ages.length-1] : '–';
-  $('aMed').textContent = med != null ? Math.round(med) : '–';
-  $('aAvg').textContent = avg != null ? avg.toFixed(1) : '–';
-
+  // Evolución
   const dated = rows.filter(r => r.fecha).sort((a,b)=>a.fecha-b.fecha);
-  const last24 = dated.filter(r => now - r.fecha <= 86400000).length;
-  const todayN = dated.filter(r => dayKey(r.fecha) === dayKey(now)).length;
-  $('k24').textContent = fmtN(last24);
-  $('kToday').textContent = `hoy: ${fmtN(todayN)}`;
-
-  // Timeline
-  let tLabels = [], tDaily = [], tCum = [];
+  const tLabels = [], tDaily = [], tCum = [];
   if (dated.length){
     const byDay = {};
     dated.forEach(r => { const k = dayKey(r.fecha); byDay[k] = (byDay[k]||0)+1; });
@@ -541,143 +431,58 @@ function render(){
     const end = new Date(endRef.getFullYear(), endRef.getMonth(), endRef.getDate());
     let cum = 0;
     for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
-      const k = dayKey(d); const v = byDay[k]||0; cum += v;
+      const v = byDay[dayKey(d)]||0; cum += v;
       tLabels.push(dayLbl(d)); tDaily.push(v); tCum.push(cum);
     }
-    const nDays = tLabels.length;
-    $('kAvg').textContent = (rows.length / nDays).toFixed(nDays > 1 ? 1 : 0).replace('.', ',');
-    $('kDays').textContent = `en ${nDays} día${nDays>1?'s':''} de inscripción`;
-  } else {
-    $('kAvg').textContent = '0'; $('kDays').textContent = 'registros por día';
   }
-  upsert('cTimeline', {
-    data:{ labels:tLabels, datasets:[
-      { type:'bar', label:'Por día', data:tDaily, backgroundColor:C.yellow, borderColor:C.black, borderWidth:2, borderRadius:6, yAxisID:'y', order:2 },
-      { type:'line', label:'Acumulado', data:tCum, borderColor:C.black, backgroundColor:C.black, borderWidth:3, pointRadius:4, tension:.25, yAxisID:'y1', order:1 }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{ position:'bottom', labels:{usePointStyle:true, font:{weight:800}} } },
-      scales:{ x:{grid:{display:false}}, y:{beginAtZero:true, ticks:{precision:0}, grid:{color:'#EEEEEC'}, title:{display:true,text:'Por día'}},
-        y1:{beginAtZero:true, position:'right', ticks:{precision:0}, grid:{display:false}, title:{display:true,text:'Acumulado'}} } }
-  });
+  const tData = { labels:tLabels, datasets:[
+    { type:'bar', label:'Por día', data:tDaily, backgroundColor:C.yellow, borderColor:C.black, borderWidth:2, borderRadius:6, yAxisID:'y', order:2 },
+    { type:'line', label:'Acumulado', data:tCum, borderColor:C.black, backgroundColor:C.black, borderWidth:3, pointRadius:4, tension:.25, yAxisID:'y1', order:1 }
+  ]};
+  if (timelineChart){ timelineChart.data = tData; timelineChart.update('none'); }
+  else {
+    const tick = { precision:0, callback:v => fmtN(v) };
+    timelineChart = new Chart($('cTimeline'), {
+      data:tData,
+      options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+        plugins:{ legend:{ position:'bottom', labels:{usePointStyle:true, font:{weight:800}} },
+          tooltip:{ callbacks:{ label:ctx => `${ctx.dataset.label}: ${fmtN(ctx.parsed.y)}` } } },
+        scales:{ x:{grid:{display:false}},
+          y:{beginAtZero:true, ticks:tick, grid:{color:'#EEEEEC'}, title:{display:true,text:'Por día'}},
+          y1:{beginAtZero:true, position:'right', ticks:tick, grid:{display:false}, title:{display:true,text:'Acumulado'}} } }
+    });
+  }
 
-  // Tamaño
-  const sizeCount = {};
-  rows.forEach(r => sizeCount[r.tam] = (sizeCount[r.tam]||0)+1);
-  const sizes = Object.keys(sizeCount).sort((a,b)=> sizeRank(a)-sizeRank(b) || sizeCount[b]-sizeCount[a]);
-  const sizeColors = sizes.map((_,i)=>PALETTE[i%PALETTE.length]);
-  // Siluetas: agrupa variantes (pequeño/chica, mediano, etc.)
+  // Tamaño (siluetas)
   const grp = { P:0, M:0, G:0 }; let other = 0;
-  rows.forEach(r => {
-    const t = norm(r.tam);
-    if (/^(peque|chic)/.test(t)) grp.P++;
-    else if (/^median/.test(t)) grp.M++;
-    else if (/^grand/.test(t)) grp.G++;
-    else other++;
-  });
-  const tot = rows.length || 1;
+  rows.forEach(r => { const g = sizeGroup(r.tam); g ? grp[g]++ : other++; });
   const maxG = Math.max(grp.P, grp.M, grp.G);
   [['P','pequena'],['M','mediana'],['G','grande']].forEach(([k,s]) => {
     $('dNum'+k).textContent = fmtN(grp[k]);
-    $('dPct'+k).textContent = (rows.length ? Math.round(grp[k]*100/tot) : 0) + '%';
+    $('dPct'+k).textContent = pctOf(grp[k], rows.length) + '%';
     document.querySelector(`.dog[data-size="${s}"]`).classList.toggle('top', maxG > 0 && grp[k] === maxG);
   });
-  $('dNote').textContent = other ? `${fmtN(other)} registro(s) sin tamaño reconocido (${Math.round(other*100/tot)}%)` : '';
+  $('dNote').textContent = other ? `${fmtN(other)} registro(s) sin tamaño reconocido (${pctOf(other, rows.length)}%)` : '';
 
-  // Opt-in
-  $('oPct').textContent = pct + '%';
-  $('oCount').textContent = `${fmtN(yes)} de ${fmtN(P.length)}`;
-  $('oBar').style.width = pct + '%';
+  // Autorización de datos (por registro)
+  const yes = rows.filter(r => r.acepta).length;
+  const no = rows.filter(r => r.rechaza).length;
+  const blank = rows.length - yes - no;
   $('oYes').textContent = fmtN(yes);
-  $('oNo').textContent = fmtN(P.length - yes);
+  $('oNo').textContent = fmtN(no);
+  $('oYesP').textContent = pctOf(yes, rows.length) + '%';
+  $('oNoP').textContent = pctOf(no, rows.length) + '%';
+  $('oBar').style.width = pctOf(yes, rows.length) + '%';
+  $('oFoot').textContent = `${fmtN(rows.length)} registros` + (blank ? ` · ${fmtN(blank)} sin respuesta` : '');
 
-  // Edad x tamaño (por registro/perro)
-  const buckets = ['18–24','25–34','35–44','45–54','55–64','65+'];
-  const bIdx = a => a < 25 ? 0 : a < 35 ? 1 : a < 45 ? 2 : a < 55 ? 3 : a < 65 ? 4 : 5;
-  const ageDs = sizes.map((s,i) => ({
-    label:s, data:buckets.map(()=>0), backgroundColor:sizeColors[i], borderColor:C.black, borderWidth:1.5, borderRadius:4
-  }));
-  // por persona: usamos el primer tamaño registrado de cada persona para no duplicar edad
-  P.forEach(p => {
-    if (p.edad == null || p.edad < 18) return;
-    p.rows.forEach(r => {
-      const si = sizes.indexOf(r.tam);
-      if (si > -1) ageDs[si].data[bIdx(p.edad)] += 1 / p.rows.length;
-    });
-  });
-  ageDs.forEach(d => d.data = d.data.map(v => Math.round(v*10)/10));
-  upsert('cAge', {
-    type:'bar',
-    data:{ labels:buckets, datasets:ageDs },
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'bottom', labels:{usePointStyle:true, font:{weight:800}}},
-        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y} persona(s)`}} },
-      scales: baseScales(true) }
-  });
-
-  // Perros por persona
-  const perCount = {};
-  P.forEach(p => { const k = p.rows.length >= 3 ? '3 o más perros' : p.rows.length === 2 ? '2 perros' : '1 perro'; perCount[k]=(perCount[k]||0)+1; });
-  const mLabels = ['1 perro','2 perros','3 o más perros'].filter(k => perCount[k]);
-  const mColors = mLabels.map((_,i)=>[C.yellow,C.black,C.gray][i]);
-  upsert('cMulti', {
-    type:'doughnut',
-    data:{ labels:mLabels, datasets:[{ data:mLabels.map(k=>perCount[k]), backgroundColor:mColors, borderColor:'#fff', borderWidth:3 }]},
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', plugins:{legend:{display:false}} }
-  });
-  legendHTML($('lMulti'), mLabels, mLabels.map(k=>perCount[k]), mColors);
-
-  // Hora
-  const hours = Array(24).fill(0);
-  dated.forEach(r => hours[r.fecha.getHours()]++);
-  let hMin = hours.findIndex(v=>v>0), hMax = 23 - [...hours].reverse().findIndex(v=>v>0);
-  if (hMin < 0){ hMin = 7; hMax = 22; }
-  hMin = Math.max(0, Math.min(hMin, 7)); hMax = Math.min(23, Math.max(hMax, 22));
-  const hLabels = [], hData = [];
-  for (let h=hMin; h<=hMax; h++){ hLabels.push(pad(h)+'h'); hData.push(hours[h]); }
-  const hPeak = Math.max(...hData);
-  upsert('cHour', {
-    type:'bar',
-    data:{ labels:hLabels, datasets:[{ label:'Registros', data:hData,
-      backgroundColor:hData.map(v => v && v === hPeak ? C.black : C.yellow), borderRadius:5 }]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:baseScales() }
-  });
-
-  // Día semana
-  const wd = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-  const wData = Array(7).fill(0);
-  dated.forEach(r => wData[(r.fecha.getDay()+6)%7]++);
-  const wPeak = Math.max(...wData);
-  upsert('cWeek', {
-    type:'bar',
-    data:{ labels:wd, datasets:[{ label:'Registros', data:wData,
-      backgroundColor:wData.map(v => v && v === wPeak ? C.black : C.yellow), borderRadius:6 }]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:baseScales() }
-  });
-
-  // Dominio email (por persona)
-  const dom = {};
-  P.forEach(p => {
-    const m = p.rows[0].correo; const d = m.includes('@') ? m.split('@')[1] : 'sin correo';
-    dom[d] = (dom[d]||0)+1;
-  });
-  let dList = Object.entries(dom).sort((a,b)=>b[1]-a[1]);
-  if (dList.length > 6){
-    const rest = dList.slice(5).reduce((a,[,v])=>a+v,0);
-    dList = dList.slice(0,5).concat([['otros',rest]]);
-  }
-  upsert('cDomain', {
-    type:'bar',
-    data:{ labels:dList.map(d=>d[0]), datasets:[{ label:'Personas', data:dList.map(d=>d[1]),
-      backgroundColor:dList.map((_,i)=> i===0 ? C.black : C.yellow), borderRadius:6 }]},
-    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ x:{beginAtZero:true, ticks:{precision:0}, grid:{color:'#EEEEEC'}}, y:{grid:{display:false}, ticks:{font:{weight:800}}} } }
-  });
-
-  // Chips de filtro
+  // Chips de filtro de la lista
+  const sizeCount = {};
+  rows.forEach(r => sizeCount[r.tam] = (sizeCount[r.tam]||0)+1);
+  const order = { P:0, M:1, G:2 };
+  const sizes = Object.keys(sizeCount).sort((a,b) => (order[sizeGroup(a)] ?? 9) - (order[sizeGroup(b)] ?? 9));
   const chipOpts = ['Todos', ...sizes];
   if (!chipOpts.includes(filterSize)) filterSize = 'Todos';
-  $('chips').innerHTML = chipOpts.map(o => `<button class="chip ${o===filterSize?'on':''}" data-v="${o}">${o}${o==='Todos'?'':' · '+sizeCount[o]}</button>`).join('');
+  $('chips').innerHTML = chipOpts.map(o => `<button class="chip ${o===filterSize?'on':''}" data-v="${esc(o)}">${esc(o)} · ${fmtN(o==='Todos' ? rows.length : sizeCount[o])}</button>`).join('');
 
   renderList();
 }
@@ -705,22 +510,6 @@ function renderList(){
   }).join('');
   $('moreBtn').style.display = list.length > shown ? 'block' : 'none';
 }
-function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* ================== CSV ================== */
-function downloadCSV(rows, name){
-  const head = ['Fecha registro','Nombre','Apellido','Celular','Correo electrónico','Fecha de nacimiento','Edad al evento','Acepta compartir datos con Kärcher','Tamaño del perro'];
-  const q = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
-  const lines = rows.map(r => [
-    r.fecha ? `${pad(r.fecha.getDate())}/${pad(r.fecha.getMonth()+1)}/${r.fecha.getFullYear()} ${pad(r.fecha.getHours())}:${pad(r.fecha.getMinutes())}` : '',
-    r.nombre, r.apellido, r.celNorm ? '+'+r.celNorm : r.celular, r.correo, r.nacTxt, r.edad ?? '', r.acepta?'Sí':'No', r.tam
-  ].map(q).join(';'));
-  const blob = new Blob(['\uFEFF' + [head.map(q).join(';'), ...lines].join('\r\n')], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = name; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-}
-function stamp(){ const d=new Date(); return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`; }
 
 /* ================== EVENTS ================== */
 $('q').addEventListener('input', e => { query = e.target.value; shown = PAGE; renderList(); });
@@ -731,15 +520,6 @@ $('chips').addEventListener('click', e => {
   renderList();
 });
 $('moreBtn').addEventListener('click', () => { shown += PAGE; renderList(); });
-$('csvAll').addEventListener('click', () => downloadCSV([...DATA].sort((a,b)=>(a.fecha||0)-(b.fecha||0)), `corrida_canina_karcher_todos_${stamp()}.csv`));
-$('csvLeads').addEventListener('click', () => {
-  // un registro por persona que acepta
-  const seen = new Set(), out = [];
-  [...DATA].sort((a,b)=>(a.fecha||0)-(b.fecha||0)).forEach(r => {
-    if (!r.acepta || seen.has(r.key)) return; seen.add(r.key); out.push(r);
-  });
-  downloadCSV(out, `leads_karcher_${stamp()}.csv`);
-});
 
 load();
 setInterval(load, REFRESH_MS);
